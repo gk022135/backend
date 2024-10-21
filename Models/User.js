@@ -17,16 +17,21 @@ const UserSchema = new Schema({
     password:{
         type:String,
         required:true,
+    },
+    hostel:{
+        type:String,
+        required:true
     }
 });
 
-const UserModel = mongoose.model('UserDB',UserSchema);
+const UserModel = mongoose.model('UserDB1',UserSchema);
 
 const createUser = async () => {
     const newUser = new UserModel({
         name: 'John Doe',
         email: 'johndoe@example123.com',
-        password: 'password123'
+        password: 'password123',
+        hostel: 'trikutta'
     });
 
     try {

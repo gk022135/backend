@@ -19,7 +19,8 @@
     "jsonwebtoken": "^9.0.2",
     "middleware": "^1.0.0",
     "mongoose": "^8.7.2",
-    "nodemon": "^3.1.7"
+    "nodemon": "^3.1.7",
+    "react-router-dom": "^6.27.0"
   },
   "description": ""
 }
