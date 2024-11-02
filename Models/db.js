@@ -1,7 +1,8 @@
 //02 kaam
 
 const mongoose = require('mongoose');
-const mongo_url = "mongodb://localhost:27017/myDatabase";
+const { UserModel } = require('./User');
+const mongo_url = "mongodb://localhost:27017/myData23";
 
 mongoose.connect(mongo_url)
 .then(()=>{

@@ -24,14 +24,17 @@ const signUpValidation = (req,res,next)=>{
 }
 const loginValidation = (req,res,next)=>{
     const schema = Joi.object({
-        email:Joi.string().email().required(),
+        email: Joi.string().email().pattern(/@smvdu\.ac\.in$/)
+        .messages({
+            'string.pattern.base': 'Email must end with "@smvdu.ac.in".',  // Custom error message
+          }),
         password:Joi.string().min(4).max(15).required()
     });
     const {error} = schema.validate(req.body);
     if(error){
         return res.status(400)
            .json({
-            message:"Bad request in Middleware", error
+            message:"Bad request in Middleware at login time", error
            })
     }
     next();

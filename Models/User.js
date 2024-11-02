@@ -24,14 +24,40 @@ const UserSchema = new Schema({
     }
 });
 
-const UserModel = mongoose.model('UserDB1',UserSchema);
+const User = mongoose.model('userdb1',UserSchema);
+
+
+
+const AdminSchema = new Schema({
+    name:{
+        type:String,
+        required:true,
+    },
+    email:{
+        type:String,
+        required:true,
+        unique:true
+    },
+    password:{
+        type:String,
+        required:true,
+    },
+    qrCodeData:{
+        type:String,
+        required:true
+    }
+});
+
+const AdminModel = mongoose.model('AdminDB1',AdminSchema);
+
+
 
 const createUser = async () => {
-    const newUser = new UserModel({
-        name: 'John Doe',
-        email: 'johndoe@example123.com',
-        password: 'password123',
-        hostel: 'trikutta'
+    const newUser = new AdminModel({
+        name: 'Admin Doe',
+        email: 'johne@example123.com',
+        password:'123456',
+        qrCodeData: 'password123',
     });
 
     try {
@@ -42,7 +68,7 @@ const createUser = async () => {
     }
 };
 
-createUser();
+// createUser();
 
 
-module.exports = UserModel;
+module.exports = {User,AdminModel};
