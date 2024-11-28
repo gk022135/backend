@@ -24,51 +24,26 @@ const UserSchema = new Schema({
     }
 });
 
-const User = mongoose.model('userdb1',UserSchema);
+const UserModel = mongoose.model('userdb1',UserSchema);
 
+// const createUser = async () => {
+//     const newUser = new UserModel({
+//         name: 'hello ji2"',
+//         email: 'wehuie@gmail.com',
+//         password: '123456',
+//         hostel: 'password123',
+//     });
+//     console.log('New User:', newUser); // Verify the document structure here
 
-
-const AdminSchema = new Schema({
-    name:{
-        type:String,
-        required:true,
-    },
-    email:{
-        type:String,
-        required:true,
-        unique:true
-    },
-    password:{
-        type:String,
-        required:true,
-    },
-    qrCodeData:{
-        type:String,
-        required:true
-    }
-});
-
-const AdminModel = mongoose.model('AdminDB1',AdminSchema);
-
-
-
-const createUser = async () => {
-    const newUser = new AdminModel({
-        name: 'Admin Doe',
-        email: 'johne@example123.com',
-        password:'123456',
-        qrCodeData: 'password123',
-    });
-
-    try {
-        await newUser.save();
-        console.log('User saved successfully');
-    } catch (err) {
-        console.log('Error saving user:', err);
-    }
-};
-
+//     try {
+//         await newUser.save();
+//         console.log('User saved successfully new');
+//     } catch (err) {
+//         console.log('Error saving user:', err.message);
+//     }
+// };
 // createUser();
 
 
-module.exports = {User,AdminModel};
+
+module.exports = UserModel;

@@ -1,7 +1,7 @@
 const mongoose = require("mongoose")
 
 const schema = new mongoose.Schema({
-    timestamp: Date,
+    createdAt: { type: Date, default: () => new Date(Date.now() + 5.5 * 60 * 60 * 1000) },
     user: String,
     message: String
 })

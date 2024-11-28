@@ -1,35 +1,50 @@
-//04
 
-const bcrypt = require('bcrypt');
 const jwtoken = require('jsonwebtoken');
-const UserModel = require("../Models/User");
 const Log = require('../Models/logModel');
+const bcrypt = require('bcrypt');
+const UserModel = require("../Models/User");
 
-const signUp = async (req,res)=>{
-    try{
-        const {name,email,password,hostel} = req.body;
-        const isUserPresent = await UserModel.findOne({email});
-        if(isUserPresent){
-            return res.status(409)
-                  .json({message:'user already exists please login'})
+const signUp = async (req, res) => {
+    try {
+        const { name, email, password, hostel } = req.body;
+        console.log(name," ",email," ",password," hostel");
+        if (!name || !email || !password || !hostel) {
+            return res.status(400).json({
+                message: 'All fields are required',
+                success: false,
+            });
         }
-        const NewUserCreate = new UserModel({name,email,password,hostel});
-        NewUserCreate.password = await bcrypt.hash(password,10);
-        await NewUserCreate.save();
-           return res.status(201)
-          .json({message: 'SignUp successfully',
-            success:true
-          })
-    }
-    catch(err){
-        res.status(500)
-             .json({
-                message:'Internal server error in ctrl',
-                success:false
-             })
 
+        const isUserPresent = await UserModel.findOne({ email });
+        if (isUserPresent) {
+            return res.status(409).json({
+                message: 'User already exists, please login',
+                success: false,
+            });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const NewUserCreate = new UserModel({
+            name,
+            email,
+            password: hashedPassword,
+            hostel,
+        });
+
+        await NewUserCreate.save();
+
+        return res.status(201).json({
+            message: 'SignUp successful',
+            success: true,
+        });
+    } catch (err) {
+        console.error("Error in signUp:", err);
+        res.status(500).json({
+            message: 'Internal server error in ctrl',
+            success: false,
+        });
     }
-}
+};
 
 const login = async (req,res)=>{
     try{
@@ -41,7 +56,7 @@ const login = async (req,res)=>{
         })
         console.log("log set ho gaya")
         // this object use in next steps;
-        const isUserPresent = await UserModel.User.findOne({email});
+        const isUserPresent = await UserModel.findOne({email});
         console.log(isUserPresent)
         if(!isUserPresent){
             return res.status(400)
