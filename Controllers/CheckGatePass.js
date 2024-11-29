@@ -1,46 +1,96 @@
-const bcrypt = require('bcrypt');
-const jwtoken = require('jsonwebtoken');
-const {UserModel ,AdminModel} = require("../Models/User");
+const bcrypt = require("bcrypt");
+const jwtoken = require("jsonwebtoken");
+const  AdminModel  = require("../Models/AdminModel");
+const UserModel  = require("../Models/User")
+const checkgpass = require("../Models/checkgpass");
+const Log = require("../Models/logModel")
 
-const Checkgpass = require("../Models/checkgpass");
+const CheckGatePass = async (req, res) => {
+    try {
+        const { QrEntry, QrExit, email } = req.body;
 
-const CheckGatePass = async (req,res)=>{
-    try{
-
-        const qrCodeData = await req.body.qrCodeData;
-        const ValidateEntry =  await Checkgpass.findOne({QrEntry});
-        const ValidateExit =  await Checkgpass.findOne({QrExit});
-
-
-        if(ValidateEntry){
-            return res.status(200)
-            .json({
-                message:"you can go bsdk",
-                success:true,
-            })
+        if (!email) {
+            return res.status(400).json({
+                message: "Email is required.",
+                success: false,
+            });
         }
-        if(ValidateEntry){
-            return res.status(200)
-            .json({
-                message:"you can go bsdk",
-                success:true,
-            })
+
+        if (!QrEntry && !QrExit) {
+            return res.status(400).json({
+                message: "Either QrEntry or QrExit is required.",
+                success: false,
+            });
         }
-        const newAdminData = new AdminModel({ qrCodeData });
-        await newAdminData.save();
-         res.status(200).json({ message: "QR Code data saved successfully"});
+        
+        console.log("finee1")
 
+        const ValidateUser = await UserModel.findOne({ email: email });
+        console.log(ValidateUser)
+        console.log("finee")
+        if (ValidateUser) {
+            const ValidateEntry = await checkgpass.findOne({ QrEntry: QrEntry });
+            const ValidateExit = await checkgpass.findOne({ QrExit: QrExit });
+
+            if (ValidateEntry) {
+                const newlog = new Log({timestamp: Date.now(),
+                    user: email,
+                    message: "User makes Entry",})
+        
+                await newlog.save();
+                return res.status(200).json({
+                    message: "You are allowed to enter.",
+                    success: true,
+                });
+            }
+
+            if (ValidateExit) {
+                const newlog = new Log({timestamp: Date.now(),
+                    user: email,
+                    message: "User made Exit",})
+        
+                await newlog.save();
+                return res.status(200).json({
+                    message: "You are allowed to exit.",
+                    success: true,
+                });
+            }
+            
+
+            return res.status(404).json({
+                message: "No valid entry or exit QR code found.",
+                success: false,
+            });
+        }
+
+        const ValidateAdmin = await AdminModel.findOne({ email: email });
+        console.log("admin")
+        console.log(ValidateAdmin)
+        if (ValidateAdmin) {
+            console.log("cnd true")
+
+            const newAdminData = new checkgpass({ QrEntry, QrExit });
+            console.log("db 1")
+            await newAdminData.save();
+            console.log("db ")
+
+            return res.status(200).json({
+                message: "QR Code data saved successfully.",
+                success: true,
+            });
+        }
+
+        return res.status(404).json({
+            message: "User or Admin not found.",
+            success: false,
+        });
+
+    } catch (error) {
+        return res.status(500).json({
+            message: "Scan again. An error occurred!",
+            success: false,
+        });
     }
-    
-    catch(error){
-        return res.status(500)
-        .json({
-           message:"Scann again bsdk !!",
-           success: false
-        })
+};
 
-
-    }
-
-}
 module.exports = CheckGatePass;
