@@ -78,7 +78,6 @@ const login = async (req,res)=>{
         )
         return res.status(200)
         .json({
-// on login success data send to front end
 
             message:"login success",
             success:true,
