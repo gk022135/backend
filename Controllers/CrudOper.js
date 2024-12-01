@@ -6,12 +6,12 @@ const CrudeOper = async (req, res) => {
     try {
         
         const { Admemail, Useremail } = req.body;
+        console.log(req.body);
 
         const AdminPresent = await AdminModel.findOne({ email: Admemail });
         const UserPresent = await UserModel.findOne({ email: Useremail });
-
-        if (AdminPresent) {
-            if (UserPresent) {
+        console.log(UserPresent," ",AdminPresent)
+    }            if (UserPresent) {
     
                 const result = await UserModel.deleteOne({ email: Useremail });
                 console.log("deltion done");
