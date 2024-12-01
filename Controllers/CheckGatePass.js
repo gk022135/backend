@@ -7,30 +7,38 @@ const Log = require("../Models/logModel")
 
 const CheckGatePass = async (req, res) => {
     try {
-        const { QrEntry, QrExit, email } = req.body;
+        const { email, QrEntry, QrExit } = req.body;
+        console.log(req.body);
 
 
         const ValidateUser = await UserModel.findOne({ email: email });
+
         if (ValidateUser && QrEntry == null && QrExit == null) {
-            console.log("if works")
             const userLogs = await Log.find({ user: email });
-            console.log("query work fine", userLogs)
-
+            console.log("Query executed successfully", userLogs);
+        
             if (userLogs.length > 0) {
-                console.log("User logs found:", userLogs);
-                return res.status(200)
-                    .json({
-
-                        message: "Log mil gya",
-                        success: true,
-                        user,
-                        createdAt
-                    })
+                return res.status(200).json({
+                    message: "Logs found successfully",
+                    success: true,
+                    logs: userLogs, // Send logs back to frontend
+                });
+            } else {
+                return res.status(200).json({
+                    message: "No logs found for this user.",
+                    success: true,
+                    logs: [], // Return an empty array
+                });
             }
-            else {
-                console.log("No logs found for this user.");
-            }
-        }
+        } 
+        
+        // else {
+        //     return res.status(400).json({
+        //         message: "Invalid request or user validation failed.",
+        //         success: false,
+        //     });
+        // }
+        
 
 
         if (!email) {
@@ -48,7 +56,7 @@ const CheckGatePass = async (req, res) => {
         }
 
         console.log("finee1")
-        console.log(ValidateUser)
+        console.log(ValidateUser, " it is show user presnet or not")
 
         if (ValidateUser) {
             const ValidateEntry = await checkgpass.findOne({ QrEntry: QrEntry });
@@ -91,8 +99,8 @@ const CheckGatePass = async (req, res) => {
 
         const ValidateAdmin = await AdminModel.findOne({ email: email });
         console.log("admin")
-        console.log(ValidateAdmin)
-        
+        console.log(ValidateAdmin, "working with db")
+
         if (ValidateAdmin) {
             console.log("cnd true")
 

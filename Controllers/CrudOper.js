@@ -4,6 +4,7 @@ const UserModel = require("../Models/User");
 
 const CrudeOper = async (req, res) => {
     try {
+        
         const { Admemail, Useremail } = req.body;
 
         const AdminPresent = await AdminModel.findOne({ email: Admemail });
@@ -17,17 +18,20 @@ const CrudeOper = async (req, res) => {
                 console.log(result);
                 if(result.deletedCount>0){
                     console.log("user deleted succefully",Useremail);
+                    return res.status(200).json({
+                        message: "Deletion done of user ${Useremail}",
+                        success: true,
+                    });
                 }
-                else{
-                    console.log("error occured");
-                }
-
+            }
+            else{
+                return res.status(201).json({
+                    message: "User Not exists",
+                    success: true,
+                });
 
             }
-            return res.status(200).json({
-                message: "Deletion done of user `${Useremail}`",
-                success: true,
-            });
+            
         }
 
     }
