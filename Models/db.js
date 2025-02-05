@@ -1,8 +1,7 @@
-//02 kaam
 
 const mongoose = require('mongoose');
 // const { UserModel } = require('./User');
-const mongo_url = "mongodb://localhost:27017/Fresh27";
+const mongo_url = "mongodb+srv://gk022135:Xy3UeqDydIM370Om@cluster0.mv7hc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
 
 mongoose.connect(mongo_url)
 .then(()=>{

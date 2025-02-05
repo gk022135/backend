@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon index.js"
+    "dev" : "nodemon Qrbackend/index.js",
+    "build" : "npm install && npm install --prefix QR-Frontend && npm run build --prefix QR-Frontend",
+    "start": "nodemon Qrbackend/index.js"
   },
   "keywords": [],
   "author": "",
@@ -20,7 +22,7 @@
     "joi": "^17.13.3",
     "jsonwebtoken": "^9.0.2",
     "middleware": "^1.0.0",
-    "mongodb": "^6.12.0",
+    "mongodb": "^6.13.0",
     "mongoose": "^8.7.2",
     "nodemon": "^3.1.7",
     "passport": "^0.7.0",
