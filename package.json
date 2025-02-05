@@ -3,9 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev" : "nodemon Qrbackend/index.js",
-    "build" : "npm install && npm install --prefix QR-Frontend && npm run build --prefix QR-Frontend",
-    "start": "nodemon Qrbackend/index.js"
+    "dev" : "nodemon backend/index.js",
+    "build" : "npm install && npm install --prefix my-app && npm run build --prefix my-app",
+    "start": "nodemon backend/index.js"
   },
   "keywords": [],
   "author": "",

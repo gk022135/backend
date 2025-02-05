@@ -24,10 +24,10 @@ app.use("/qr-code-system", SinLog);
 
 // Serve Frontend (Ensure 'build' is correct, not 'dist')
 const _dirname = path.resolve();
-app.use(express.static(path.join(_dirname, "QR-Frontend/build")));
+app.use(express.static(path.join(_dirname, "my-app/build")));
 
 app.get("*", (req, res) => {
-    res.sendFile(path.resolve(_dirname, "QR-Frontend", "build", "index.html"));
+    res.sendFile(path.resolve(_dirname, "my-app", "build", "index.html"));
 });
 
 // Start Server
